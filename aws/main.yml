@@ -1,0 +1,6 @@
+---
+- hosts: all
+  vars_files: 
+    - aws/defaults/main.yml
+  roles:
+    - aws

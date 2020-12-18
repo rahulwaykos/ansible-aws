@@ -1,0 +1,27 @@
+---
+# tasks file for aws
+- name: Launch EC2 instance
+  ec2:
+    aws_access_key: "{{ aws_access_key_id }}"
+    aws_secret_key: "{{ aws_secret_access_key }}"
+    access_token: "{{ aws_session_token }}"
+    region: us-east-1
+    key_name: devops
+    instance_type: t2.micro
+    image: ami-072af3358a766076f
+    group_id: sg-06a538cac63e8ecfc
+    user_data: "{{ lookup('file', 'user_data.sh') }}"
+    wait: yes
+    wait_timeout: 500
+    volumes:
+      - device_name: /dev/sdb
+        volume_type: gp2
+        volume_size: 8
+        delete_on_termination: true
+    monitoring: no
+    vpc_subnet_id: subnet-cde0e2f3
+    assign_public_ip: yes
+  register: ec2
+- name: Public Ip
+  debug: 
+    var: ec2
